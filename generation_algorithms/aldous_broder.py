@@ -6,7 +6,6 @@ def is_valid_input(dimension: str) -> bool:
     try:
         return int(dimension) > 0
     except ValueError:
-        print("❌ Invalid input. Enter a positive integer.")
         return False
 
 print("Let's generate a Maze!")
@@ -19,12 +18,14 @@ while True:
     if is_valid_input(rows_input):
         rows = int(rows_input)
         break
+    print("❌ Invalid input. Enter a positive integer.")
 
 while True:
     cols_input = input("> 👉 Cols: ").strip()
     if is_valid_input(cols_input):
         cols = int(cols_input)
         break
+    print("❌ Invalid input. Enter a positive integer.")
 
 # Create Grid
 grid = Grid(rows,cols)
