@@ -60,6 +60,8 @@ while grid.get_unvisited_cells():
     else:
         if count > 0:
             current_cell.path_visited(main_end_char)
+            print(f"Ending at {main_end_char}: row: {current_cell.pos[0] + 1} "
+                  f"col: {current_cell.pos[1] + 1}")
             count -= 1
         current_cell = grid.get_random_cell()
         current_cell.is_visited = True
