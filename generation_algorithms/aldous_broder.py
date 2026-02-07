@@ -28,17 +28,19 @@ while True:
 
 # Create Grid
 grid = Grid(rows,cols)
-delta = (1, 1)
-display_rc = lambda pos: tuple(a + b for a, b in zip(pos, delta))
+
+main_start_char = "X"
+main_end_char = "M"
+
 
 # Pick a random starting cell
 current_cell = grid.get_random_cell()
-current_cell.path_visited('X')
-disp_rc = display_rc(current_cell.pos)
-print(f"Starting at X: row: {disp_rc[0]} col: {disp_rc[1]}")
-
+current_cell.path_visited(main_start_char)
+print(f"Starting at {main_start_char}: row: {current_cell.pos[0]+1} "
+      f"col: {current_cell.pos[1]+1}")
+count = 1
 # Loop until all cells are visited
-while True:
+while grid.get_unvisited_cells():
     # Pick a random unvisited neighbour
     random_neighbour = grid.get_random_unvisited_neighbour(current_cell)
 
@@ -51,15 +53,16 @@ while True:
         neighbour.remove_wall(direction.get_opposite())
 
         # Mark neighbour as visited
-        neighbour.path_visited('o')
+        neighbour.is_visited = True
 
         # Move to neighbour
         current_cell = neighbour
     else:
-        disp_rc = display_rc(current_cell.pos)
-        current_cell.path_visited('M')
-        print(f"Ending at M: {disp_rc[0]} col: {disp_rc[1]}")
-        break
+        if count > 0:
+            current_cell.path_visited(main_end_char)
+            count -= 1
+        current_cell = grid.get_random_cell()
+        current_cell.is_visited = True
 
 
 print(grid)

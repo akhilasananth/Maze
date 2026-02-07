@@ -8,8 +8,8 @@ Amaze maze
 - Possible ar game?
 
 ## Methods
-- Aldous Broder 
-  - ![img_1.png](img_1.png)
+- Aldous Broder
+  - ![img_2.png](ab_demo.png) 
 ### **Example grid:**
 
-![img.png](img.png)
+![img.png](example_grid.png)
