@@ -1,7 +1,8 @@
 # Next Steps
 
 - [ ] Document methods
-- [ ] User input : Grid size
+- [x] User input : Grid size
 - [ ] Refactor any repeated code
-- [ ] Write more tests 
+- [ ] Write more tests for components
+- [ ] Write tests for aldous_broder.py
 
