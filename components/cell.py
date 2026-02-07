@@ -16,8 +16,10 @@ class Cell:
         self.walls: dict[Direction, bool] = {d: True for d in Direction}
         self.content = check_content(content)
 
+    def __str__(self):
+        return "\n".join(self.get_cell_lines())
 
-    def get_cell_lines_str(self) -> list[str]:
+    def get_cell_lines(self) -> list[str]:
         # Top border
         top_line = build_cell_line(
             is_left=None,
@@ -25,7 +27,7 @@ class Cell:
             is_right=None
         )
 
-        # Middle get_cell_lines_str
+        # Middle get_cell_lines
         middle_lines = [
             build_cell_line(
                 is_left=self.walls[Direction.WEST],
@@ -48,9 +50,6 @@ class Cell:
     def path_visited(self, char):
         self.is_visited = True
         self.content = check_content(char)
-
-    def __str__(self):
-        return "\n".join(self.get_cell_lines_str())
 
     def remove_wall(self, wall_direction: Direction):
         self.walls[wall_direction] = False

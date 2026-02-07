@@ -13,8 +13,8 @@ class Grid:
         lines: list[str] = []
 
         for r, row in enumerate(self.grid):
-            # Prepare lists of get_cell_lines_str for each cell
-            row_lines = [cell.get_cell_lines_str() for cell in row]
+            # Prepare lists of get_cell_lines for each cell
+            row_lines = [cell.get_cell_lines() for cell in row]
             # remove last line of all cells if this row is not the last row
             if r < len(self.grid) - 1:
                 for lines_of_cell in row_lines:

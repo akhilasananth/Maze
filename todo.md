@@ -6,4 +6,5 @@ In priority order
 - [ ] Write more tests for components
 - [ ] Refactor any repeated code
 - [ ] Document methods
+- [ ] How do I increase the complexity?
 
