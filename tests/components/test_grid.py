@@ -50,13 +50,13 @@ def test_tostr_grid_full(test_objects):
     grid = test_objects.grid
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -69,13 +69,13 @@ def test_tostr_grid_middle_no_north(test_objects):
     grid.grid[r][c].walls[Direction.NORTH] = False
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ----      ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+   +---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -87,13 +87,13 @@ def test_tostr_grid_middle_no_east(test_objects):
     grid.grid[r][c+1].walls[Direction.WEST] = False  # shared wall
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |         |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │       │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -104,13 +104,13 @@ def test_tostr_grid_middle_no_south(test_objects):
     grid.grid[r][c].walls[Direction.SOUTH] = False
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ----      ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+   +---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -118,17 +118,17 @@ def test_tostr_grid_middle_no_west(test_objects):
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
 
-    grid.grid[r][c].walls[Direction.WEST] = False
+    # grid.grid[r][c].walls[Direction.WEST] = False
     grid.grid[r][c-1].walls[Direction.EAST] = False  # shared wall
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|         |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│       │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -141,13 +141,13 @@ def test_tostr_grid_top_right_corner_no_north(test_objects):
     grid.grid[r][c].walls[Direction.NORTH] = False
 
     expected = (
-     ' ---- ----      \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+   +\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -158,13 +158,13 @@ def test_tostr_grid_top_right_corner_no_west(test_objects):
     grid.grid[r][c].walls[Direction.WEST] = False
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |         |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │       │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -175,13 +175,13 @@ def test_tostr_grid_top_right_corner_no_east(test_objects):
     grid.grid[r][c].walls[Direction.EAST] = False
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |    |     \n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │    \n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -192,13 +192,13 @@ def test_tostr_grid_top_right_corner_no_south(test_objects):
     grid.grid[r][c].walls[Direction.SOUTH] = False
 
     expected = (
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ----      \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- \n'
-     '|    |    |    |\n'
-     ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+   +\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -211,13 +211,13 @@ def test_tostr_grid_bottom_left_corner_no_north(test_objects):
     grid.grid[r][c].walls[Direction.NORTH] = False
 
     expected = (
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        '      ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- '
+        '+---+---+---+\n'
+        '│   │   │   │\n'
+        '+---+---+---+\n'
+        '│   │   │   │\n'
+        '+   +---+---+\n'
+        '│   │   │   │\n'
+        '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -228,13 +228,13 @@ def test_tostr_grid_bottom_left_corner_no_east(test_objects):
     grid.grid[r][c].walls[Direction.EAST] = False
 
     expected = (
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- \n'
-        '|         |    |\n'
-        ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│       │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
@@ -245,13 +245,13 @@ def test_tostr_grid_bottom_left_corner_no_south(test_objects):
     grid.grid[r][c].walls[Direction.SOUTH] = False
 
     expected = (
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        '      ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+   +---+---+'
     )
 
     assert str(grid) == expected
@@ -262,13 +262,13 @@ def test_tostr_grid_bottom_left_corner_no_west(test_objects):
     grid.grid[r][c].walls[Direction.WEST] = False
 
     expected = (
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- \n'
-        '|    |    |    |\n'
-        ' ---- ---- ---- \n'
-        '     |    |    |\n'
-        ' ---- ---- ---- '
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '│   │   │   │\n'
+     '+---+---+---+\n'
+     '    │   │   │\n'
+     '+---+---+---+'
     )
 
     assert str(grid) == expected
