@@ -1,6 +1,7 @@
 import random
 
 from components.cell import Cell, Direction
+from components.constants import CellType
 
 
 class Grid:
@@ -36,7 +37,7 @@ class Grid:
     def create_grid(self) -> list[list[Cell]]:
         return [[Cell(row, col) for col in range(self.cols)] for row in range(self.rows)]
 
-    def get_unvisited_cells(self):
+    def get_unvisited_cells(self) -> list[tuple[int, int]]:
         return [
             (r, c)
             for r, row in enumerate(self.grid)
@@ -44,18 +45,65 @@ class Grid:
             if not cell.is_visited
         ]
 
-    def get_random_cell(self) -> "Cell":
-        """
-        Returns a random unvisited cell from the grid.
-        Raises a RuntimeError if all cells are visited.
-        """
-        unvisited_cells = self.get_unvisited_cells()
 
+    def get_random_cell(self, unvisited_cells: list[tuple[int, int]], cell_type: CellType) -> Cell:
         if not unvisited_cells:
-            raise RuntimeError("All cells in the grid have already been visited.")
+            raise RuntimeError(f"{cell_type} cells in the grid have already been visited.")
 
         r, c = random.choice(unvisited_cells)
         return self.grid[r][c]
+
+    def get_random_any_cell(self) -> Cell:
+        return self.get_random_cell(self.get_unvisited_cells(), CellType.ALL)
+
+    def get_random_border_cell(self) -> Cell:
+        border_unvisited_cells = [
+            (r, c)
+            for r, c in self.get_unvisited_cells()
+            if r == 0 or r == self.rows-1 or c == 0 or c == self.cols-1
+        ]
+        return self.get_random_cell(border_unvisited_cells, CellType.BORDER)
+
+    def open_maze(self, border_cell: Cell):
+        # If the cell is a border cell, then remove the outer border, opening up the maze
+        # This is for the cell from which the game will be starting
+        r,c = border_cell.pos
+
+        if not(r == 0 or r == self.rows - 1 or c == 0 or c == self.cols - 1):
+            print("The input cell is not a border cell. Please input a border cell")
+            return
+
+        # top left corner
+        if border_cell.pos == (0,0):
+            border_cell.remove_wall(random.choice([Direction.NORTH, Direction.WEST]))
+
+        # top right corner
+        if border_cell == (0,self.cols-1):
+            border_cell.remove_wall(random.choice([Direction.NORTH, Direction.EAST]))
+
+        # bottom left corner
+        if border_cell == (self.rows-1,0):
+            border_cell.remove_wall(random.choice([Direction.SOUTH, Direction.WEST]))
+
+        # bottom right corner
+        if border_cell == (self.rows-1, self.cols-1):
+            border_cell.remove_wall(random.choice([Direction.SOUTH, Direction.EAST]))
+
+        # north border cell
+        if r == 0:
+            border_cell.remove_wall(Direction.NORTH)
+
+        # east border cell
+        if c == self.cols-1:
+            border_cell.remove_wall(Direction.EAST)
+
+        # south border cell
+        if r == self.rows-1:
+            border_cell.remove_wall(Direction.SOUTH)
+
+        # west border cell
+        if c == 0:
+            border_cell.remove_wall(Direction.WEST)
 
     def get_random_unvisited_neighbour(self, cell: Cell) -> tuple[Cell, Direction] | None:
         """
@@ -80,3 +128,4 @@ class Grid:
         return random.choice(neighbors)
 
     def remove_shared_wall(self, curr_cell_pos: tuple[int, int], wall_direction: Direction): pass
+

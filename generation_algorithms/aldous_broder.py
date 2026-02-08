@@ -35,10 +35,13 @@ main_end_char = "M"
 
 
 # Pick a random starting cell
-current_cell = grid.get_random_cell()
+current_cell = grid.get_random_border_cell()
+grid.open_maze(current_cell)
 current_cell.path_visited(main_start_char)
+
 print(f"Starting at {main_start_char}: row: {current_cell.pos[0]+1} "
       f"col: {current_cell.pos[1]+1}")
+
 count = 1
 # Loop until all cells are visited
 while grid.get_unvisited_cells():
@@ -64,7 +67,7 @@ while grid.get_unvisited_cells():
             print(f"Ending at {main_end_char}: row: {current_cell.pos[0] + 1} "
                   f"col: {current_cell.pos[1] + 1}")
             count -= 1
-        current_cell = grid.get_random_cell()
+        current_cell = grid.get_random_any_cell()
         current_cell.is_visited = True
 
 

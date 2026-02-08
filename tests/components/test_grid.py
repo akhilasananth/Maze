@@ -278,16 +278,16 @@ def test_get_random_cell_returns_unvisited_cell(test_objects):
     g = test_objects.grid
 
     # All cells are unvisited initially
-    cell = g.get_random_cell()
+    cell = g.get_random_any_cell()
     assert isinstance(cell, Cell)
     assert cell.is_visited is False
 def test_get_random_cell_returns_different_cells(test_objects, fixed_random_choice):
     g = test_objects.grid
 
-    first_cell = g.get_random_cell()
+    first_cell = g.get_random_any_cell()
     first_cell.is_visited = True  # mark as visited
 
-    next_cell = g.get_random_cell()
+    next_cell = g.get_random_any_cell()
     assert next_cell != first_cell  # should pick a different unvisited cell
 def test_get_random_cell_raises_when_all_visited(test_objects):
     g = test_objects.grid
@@ -299,7 +299,7 @@ def test_get_random_cell_raises_when_all_visited(test_objects):
 
     # Expect RuntimeError
     with pytest.raises(RuntimeError, match="All cells in the grid have already been visited."):
-        g.get_random_cell()
+        g.get_random_any_cell()
 
 # Random Unvisited Neighbour
 def test_random_unvisited_neighbour_returns_none_if_all_visited(test_objects):

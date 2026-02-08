@@ -7,6 +7,10 @@ HORIZONTAL_CHAR = "-"
 VERTICAL_CHAR = "│"
 IN_BETWEEN_CELLS_CHAR = "+"
 
+class CellType(Enum):
+    BORDER = "Border"
+    ALL = "All"
+
 class Direction(Enum):
     # (row, column)
     NORTH = (-1, 0)

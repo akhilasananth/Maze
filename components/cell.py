@@ -53,3 +53,4 @@ class Cell:
 
     def remove_wall(self, wall_direction: Direction):
         self.walls[wall_direction] = False
+
