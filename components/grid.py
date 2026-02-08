@@ -67,7 +67,10 @@ class Grid:
     def open_maze(self, border_cell: Cell):
         # If the cell is a border cell, then remove the outer border, opening up the maze
         # This is for the cell from which the game will be starting
+        # sets end char accordingly
+
         r,c = border_cell.pos
+        removed_wall_dir = Direction.NORTH
 
         if not(r == 0 or r == self.rows - 1 or c == 0 or c == self.cols - 1):
             print("The input cell is not a border cell. Please input a border cell")
@@ -75,35 +78,37 @@ class Grid:
 
         # top left corner
         if border_cell.pos == (0,0):
-            border_cell.remove_wall(random.choice([Direction.NORTH, Direction.WEST]))
+            removed_wall_dir = random.choice([Direction.NORTH, Direction.WEST])
 
         # top right corner
         if border_cell == (0,self.cols-1):
-            border_cell.remove_wall(random.choice([Direction.NORTH, Direction.EAST]))
+            removed_wall_dir = random.choice([Direction.NORTH, Direction.EAST])
 
         # bottom left corner
         if border_cell == (self.rows-1,0):
-            border_cell.remove_wall(random.choice([Direction.SOUTH, Direction.WEST]))
+            removed_wall_dir = random.choice([Direction.SOUTH, Direction.WEST])
 
         # bottom right corner
         if border_cell == (self.rows-1, self.cols-1):
-            border_cell.remove_wall(random.choice([Direction.SOUTH, Direction.EAST]))
+            removed_wall_dir = random.choice([Direction.SOUTH, Direction.EAST])
 
         # north border cell
         if r == 0:
-            border_cell.remove_wall(Direction.NORTH)
+            removed_wall_dir = Direction.NORTH
 
         # east border cell
         if c == self.cols-1:
-            border_cell.remove_wall(Direction.EAST)
+            removed_wall_dir = Direction.EAST
 
         # south border cell
         if r == self.rows-1:
-            border_cell.remove_wall(Direction.SOUTH)
+            removed_wall_dir = Direction.SOUTH
 
         # west border cell
         if c == 0:
-            border_cell.remove_wall(Direction.WEST)
+            removed_wall_dir = Direction.WEST
+
+        border_cell.remove_wall(removed_wall_dir)
 
     def get_random_unvisited_neighbour(self, cell: Cell) -> tuple[Cell, Direction] | None:
         """
