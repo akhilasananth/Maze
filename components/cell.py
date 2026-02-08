@@ -1,3 +1,5 @@
+from typing import Self
+
 from components.constants import Direction, CELL_HEIGHT, build_cell_line
 
 

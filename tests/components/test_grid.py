@@ -1,5 +1,6 @@
 import random
 from components.cell import Cell, Direction
+from components.constants import CellType
 from components.grid import Grid
 import pytest
 from dataclasses import dataclass
@@ -37,6 +38,7 @@ def test_create_grid_dimensions():
 
     assert len(grid) == 3
     assert all(len(row) == 4 for row in grid)
+
 def test_create_grid_contains_cells():
     g = Grid(2, 2)
     grid = g.create_grid()
@@ -66,7 +68,7 @@ def test_tostr_grid_middle_no_north(test_objects):
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
 
-    grid.grid[r][c].walls[Direction.NORTH] = False
+    grid.remove_grid_wall(r, c, Direction.NORTH)
 
     expected = (
      '+---+---+---+\n'
@@ -79,12 +81,12 @@ def test_tostr_grid_middle_no_north(test_objects):
     )
 
     assert str(grid) == expected
+
 def test_tostr_grid_middle_no_east(test_objects):
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
 
-    grid.grid[r][c].walls[Direction.EAST] = False
-    grid.grid[r][c+1].walls[Direction.WEST] = False  # shared wall
+    grid.remove_grid_wall(r, c+1, Direction.WEST)  # shared wall
 
     expected = (
      '+---+---+---+\n'
@@ -97,11 +99,12 @@ def test_tostr_grid_middle_no_east(test_objects):
     )
 
     assert str(grid) == expected
+
 def test_tostr_grid_middle_no_south(test_objects):
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
 
-    grid.grid[r][c].walls[Direction.SOUTH] = False
+    grid.remove_grid_wall(r, c, Direction.SOUTH)
 
     expected = (
      '+---+---+---+\n'
@@ -114,12 +117,12 @@ def test_tostr_grid_middle_no_south(test_objects):
     )
 
     assert str(grid) == expected
+
 def test_tostr_grid_middle_no_west(test_objects):
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
 
-    # grid.grid[r][c].walls[Direction.WEST] = False
-    grid.grid[r][c-1].walls[Direction.EAST] = False  # shared wall
+    grid.remove_grid_wall(r, c-1, Direction.EAST)
 
     expected = (
      '+---+---+---+\n'
@@ -138,7 +141,7 @@ def test_tostr_grid_top_right_corner_no_north(test_objects):
     grid = test_objects.grid
     r, c = test_objects.top_right_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.NORTH] = False
+    grid.remove_grid_wall(r, c, Direction.NORTH)
 
     expected = (
      '+---+---+   +\n'
@@ -151,11 +154,12 @@ def test_tostr_grid_top_right_corner_no_north(test_objects):
     )
 
     assert str(grid) == expected
+
 def test_tostr_grid_top_right_corner_no_west(test_objects):
     grid = test_objects.grid
     r, c = test_objects.top_right_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.WEST] = False
+    grid.remove_grid_wall(r, c, Direction.WEST)
 
     expected = (
      '+---+---+---+\n'
@@ -172,7 +176,7 @@ def test_tostr_grid_top_right_corner_no_east(test_objects):
     grid = test_objects.grid
     r, c = test_objects.top_right_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.EAST] = False
+    grid.remove_grid_wall(r, c, Direction.EAST)
 
     expected = (
      '+---+---+---+\n'
@@ -185,11 +189,12 @@ def test_tostr_grid_top_right_corner_no_east(test_objects):
     )
 
     assert str(grid) == expected
+
 def test_tostr_grid_top_right_corner_no_south(test_objects):
     grid = test_objects.grid
     r, c = test_objects.top_right_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.SOUTH] = False
+    grid.remove_grid_wall(r, c, Direction.SOUTH)
 
     expected = (
      '+---+---+---+\n'
@@ -208,7 +213,7 @@ def test_tostr_grid_bottom_left_corner_no_north(test_objects):
     grid = test_objects.grid
     r, c = test_objects.bottom_left_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.NORTH] = False
+    grid.remove_grid_wall(r, c, Direction.NORTH)
 
     expected = (
         '+---+---+---+\n'
@@ -225,7 +230,7 @@ def test_tostr_grid_bottom_left_corner_no_east(test_objects):
     grid = test_objects.grid
     r, c = test_objects.bottom_left_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.EAST] = False
+    grid.remove_grid_wall(r, c, Direction.EAST)
 
     expected = (
      '+---+---+---+\n'
@@ -238,11 +243,12 @@ def test_tostr_grid_bottom_left_corner_no_east(test_objects):
     )
 
     assert str(grid) == expected
+
 def test_tostr_grid_bottom_left_corner_no_south(test_objects):
     grid = test_objects.grid
     r, c = test_objects.bottom_left_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.SOUTH] = False
+    grid.remove_grid_wall(r, c, Direction.SOUTH)
 
     expected = (
      '+---+---+---+\n'
@@ -255,11 +261,12 @@ def test_tostr_grid_bottom_left_corner_no_south(test_objects):
     )
 
     assert str(grid) == expected
+
 def test_tostr_grid_bottom_left_corner_no_west(test_objects):
     grid = test_objects.grid
     r, c = test_objects.bottom_left_corner_cell_pos
 
-    grid.grid[r][c].walls[Direction.WEST] = False
+    grid.remove_grid_wall(r, c, Direction.WEST)
 
     expected = (
      '+---+---+---+\n'
@@ -298,7 +305,7 @@ def test_get_random_cell_raises_when_all_visited(test_objects):
             cell.is_visited = True
 
     # Expect RuntimeError
-    with pytest.raises(RuntimeError, match="All cells in the grid have already been visited."):
+    with pytest.raises(RuntimeError, match=f"{CellType.ALL.value} cells in the grid have already been visited."):
         g.get_random_any_cell()
 
 # Random Unvisited Neighbour
@@ -314,6 +321,7 @@ def test_random_unvisited_neighbour_returns_none_if_all_visited(test_objects):
     g.grid[1][0].is_visited = True  # WEST
 
     assert g.get_random_unvisited_neighbour(cell) is None
+
 def test_random_unvisited_neighbour_returns_only_available_neighbor(test_objects, fixed_random_choice):
     g = test_objects.grid
     middle_r, middle_c = test_objects.middle_cell_pos

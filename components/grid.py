@@ -10,13 +10,40 @@ class Grid:
         self.cols: int = cols
         self.grid: list[list[Cell]] = self.create_grid()
 
+    def create_grid(self) -> list[list[Cell]]:
+        return [[Cell(row, col) for col in range(self.cols)] for row in range(self.rows)]
+
+    def get_cell_coord_in_direction(self, cell: Cell, direction: Direction) -> tuple[int, int] | None:
+        dr, dc = direction.value
+        r, c = cell.pos
+        nr, nc = r + dr, c + dc # neighbour coord
+
+        if nr < 0 or nr > self.rows-1 or nc < 0 or nc > self.cols-1:
+            print("There are no neighbouring cells in this direction")
+            return None
+
+        return nr, nc
+
+
+    def remove_grid_wall(self, row, col, wall_direction: Direction):
+        self.grid[row][col].remove_wall(wall_direction)
+
+        opposite_direction = wall_direction.get_opposite()
+        opposite_cell_coord = self.get_cell_coord_in_direction(self.grid[row][col], wall_direction)
+
+        if opposite_cell_coord:
+            nr, nc = opposite_cell_coord
+            self.grid[nr][nc].remove_wall(opposite_direction)
+
+
     def __str__(self):
         lines: list[str] = []
 
         for r, row in enumerate(self.grid):
-            # Prepare lists of get_cell_lines for each cell
+            # Prepare lists of cell_lines for each cell
             row_lines = [cell.get_cell_lines() for cell in row]
-            # remove last line of all cells if this row is not the last row
+
+            # To avoid repeated row borders: the south line of all cells except for the last is skipped
             if r < len(self.grid) - 1:
                 for lines_of_cell in row_lines:
                     lines_of_cell.pop()
@@ -34,9 +61,6 @@ class Grid:
 
         return "\n".join(lines)
 
-    def create_grid(self) -> list[list[Cell]]:
-        return [[Cell(row, col) for col in range(self.cols)] for row in range(self.rows)]
-
     def get_unvisited_cells(self) -> list[tuple[int, int]]:
         return [
             (r, c)
@@ -47,7 +71,7 @@ class Grid:
 
     def get_random_cell(self, unvisited_cells: list[tuple[int, int]], cell_type: CellType) -> Cell:
         if not unvisited_cells:
-            raise RuntimeError(f"{cell_type} cells in the grid have already been visited.")
+            raise RuntimeError(f"{cell_type.value} cells in the grid have already been visited.")
 
         r, c = random.choice(unvisited_cells)
         return self.grid[r][c]
@@ -115,12 +139,12 @@ class Grid:
         neighbors: list[tuple[Cell, Direction]] = []
 
         for direction in Direction:
-            dr, dc = direction.value # direction relative to the current cell
-            r, c = cell.pos[0] + dr, cell.pos[1] + dc
+            n_cell_coord = self.get_cell_coord_in_direction(cell, direction)
 
-            # Check bounds
-            if 0 <= r < len(self.grid) and 0 <= c < len(self.grid[0]):
-                neighbor = self.grid[r][c]
+            if n_cell_coord:
+                nr, nc = n_cell_coord
+                neighbor = self.grid[nr][nc]
+
                 if not neighbor.is_visited:
                     neighbors.append((neighbor, direction))
 
@@ -129,5 +153,4 @@ class Grid:
 
         return random.choice(neighbors)
 
-    def remove_shared_wall(self, curr_cell_pos: tuple[int, int], wall_direction: Direction): pass
 
