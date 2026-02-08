@@ -19,7 +19,6 @@ class Grid:
         nr, nc = r + dr, c + dc # neighbour coord
 
         if nr < 0 or nr > self.rows-1 or nc < 0 or nc > self.cols-1:
-            print("There are no neighbouring cells in this direction")
             return None
 
         return nr, nc
