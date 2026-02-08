@@ -10,6 +10,10 @@ Amaze maze
 ## Methods
 - Aldous Broder
   - ![img.png](media/demos/ab_demo_2.png)
-### **Example grid:**
 
+### **Example grid:**
 ![img.png](media/example_grid.png)
+
+## References
+- https://healeycodes.com/generating-mazes
+- https://en.wikipedia.org/wiki/Maze_generation_algorithm
