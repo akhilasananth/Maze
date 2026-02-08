@@ -47,8 +47,8 @@ while grid.get_unvisited_cells():
         # print("Moving to:", neighbour.pos)
 
         # Remove walls between current cell and neighbour
-        current_cell.remove_wall(direction)
-        neighbour.remove_wall(direction.get_opposite())
+        curr_r, curr_c = current_cell.pos
+        grid.remove_grid_wall(curr_r, curr_c, direction)
 
         # Mark neighbour as visited
         neighbour.is_visited = True

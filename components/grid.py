@@ -99,35 +99,35 @@ class Grid:
 
         # top left corner
         if border_cell.pos == (0,0):
-            border_cell.remove_wall(random.choice([Direction.NORTH, Direction.WEST]))
+            self.remove_grid_wall(r, c, random.choice([Direction.NORTH, Direction.WEST]))
 
         # top right corner
         if border_cell == (0,self.cols-1):
-            border_cell.remove_wall(random.choice([Direction.NORTH, Direction.EAST]))
+            self.remove_grid_wall(r, c, random.choice([Direction.NORTH, Direction.EAST]))
 
         # bottom left corner
         if border_cell == (self.rows-1,0):
-            border_cell.remove_wall(random.choice([Direction.SOUTH, Direction.WEST]))
+            self.remove_grid_wall(r, c, random.choice([Direction.SOUTH, Direction.WEST]))
 
         # bottom right corner
         if border_cell == (self.rows-1, self.cols-1):
-            border_cell.remove_wall(random.choice([Direction.SOUTH, Direction.EAST]))
+            self.remove_grid_wall(r, c, random.choice([Direction.SOUTH, Direction.EAST]))
 
         # north border cell
         if r == 0:
-            border_cell.remove_wall(Direction.NORTH)
+            self.remove_grid_wall(r, c, Direction.NORTH)
 
         # east border cell
         if c == self.cols-1:
-            border_cell.remove_wall(Direction.EAST)
+            self.remove_grid_wall(r, c, Direction.EAST)
 
         # south border cell
         if r == self.rows-1:
-            border_cell.remove_wall(Direction.SOUTH)
+            self.remove_grid_wall(r, c, Direction.SOUTH)
 
         # west border cell
         if c == 0:
-            return border_cell.remove_wall(Direction.WEST)
+            self.remove_grid_wall(r, c, Direction.WEST)
 
         return None
 
