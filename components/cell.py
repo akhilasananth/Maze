@@ -22,11 +22,14 @@ class Cell(ABC):
 
     @abstractmethod
     def __str__(self):
-        raise NotImplementedError("Subclasses must implement __str__")
+        raise NotImplementedError("Cell subclass must implement __str__")
 
     @abstractmethod
     def get_cell_lines(self) -> list[str]:
-        raise NotImplementedError("Subclasses must implement get_cell_lines")
+        """
+        Get a list consisting of the border-lines of a cell constructed using the build_cell_line method
+        """
+        raise NotImplementedError("Cell subclass must implement get_cell_lines")
 
     def set_is_visited(self, is_visited: bool) -> None:
         check_type(is_visited, bool)
@@ -35,15 +38,6 @@ class Cell(ABC):
     def set_cell_content(self, char: str) -> None:
         self.content = get_cell_content(char)
 
-    def remove_wall(self, wall_direction: DirectionType) -> None:
-        self.shape.is_valid_wall(wall_direction=wall_direction)
-        self.shape.walls[wall_direction] = False
-
-    def add_wall(self, wall_direction: DirectionType) -> bool:
-        self.shape.is_valid_wall(wall_direction)
-        self.shape.walls[wall_direction] = True
-
-        return True
 
     def build_cell_line(
         self,
