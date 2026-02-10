@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from constants import IN_BETWEEN_CELLS_CHAR, VERTICAL_CHAR, CELL_WIDTH, HORIZONTAL_CHAR
 from enums.direction_enums import DirectionType
-from enums.enums import CellShape
+from utils.cell_shape import QuadCellShape, CellShape
 from utils.helpers import get_cell_content
 from utils.validators import check_type
 
@@ -11,15 +11,11 @@ class Cell(ABC):
     def __init__(self,
                  pos: tuple[int, int],
                  content: str = " ",
-                 shape: CellShape = CellShape.QUAD,
+                 shape: CellShape = QuadCellShape(),
         ):
 
         self.pos: tuple[int, int] = pos
-
-        check_type(shape, CellShape)
         self.shape: CellShape = shape
-
-        self.walls: dict[DirectionType, bool] = self.shape.value["walls"]
         self.content: str = get_cell_content(content)
         self.is_visited = False
 
@@ -31,9 +27,6 @@ class Cell(ABC):
     def get_cell_lines(self) -> list[str]:
         raise NotImplementedError("Subclasses must implement get_cell_lines")
 
-    def get_number_of_walls(self):
-        return len(self.walls)
-
     def set_is_visited(self, is_visited: bool) -> None:
         check_type(is_visited, bool)
         self.is_visited = is_visited
@@ -41,19 +34,13 @@ class Cell(ABC):
     def set_cell_content(self, char: str) -> None:
         self.content = get_cell_content(char)
 
-    def is_valid_wall(self, wall_direction: DirectionType):
-        check_type(wall_direction, DirectionType)
-        if wall_direction not in self.walls:
-            raise ValueError(
-                f"{wall_direction} is an invalid wall direction for this cell shape: {self.shape}"
-            )
     def remove_wall(self, wall_direction: DirectionType) -> None:
-        self.is_valid_wall(wall_direction)
-        self.walls[wall_direction] = False
+        self.shape.is_valid_wall(wall_direction=wall_direction)
+        self.shape.walls[wall_direction] = False
 
     def add_wall(self, wall_direction: DirectionType) -> bool:
-        self.is_valid_wall(wall_direction)
-        self.walls[wall_direction] = True
+        self.shape.is_valid_wall(wall_direction)
+        self.shape.walls[wall_direction] = True
 
         return True
 

@@ -10,10 +10,6 @@ from enums.direction_enums import TriangleDirection, QuadDirection
 def test_cell():
     return QuadCell(0,0)
 
-# get_number_of_walls
-def test_get_number_of_walls(test_cell):
-    assert test_cell.get_number_of_walls() == 4
-
 # set_is_visited
 
 def test_set_is_visited_correct(test_cell):
@@ -47,37 +43,18 @@ def test_set_cell_content_empty_str(test_cell):
     test_cell.set_cell_content("")
     assert test_cell.content == " "
 
-# is_valid_wall
 
-def test_is_valid_wall_incorrect_direction_type(test_cell):
-    with pytest.raises(TypeError) as execute_is_valid_wall:
-        test_cell.is_valid_wall("northwall")
-
-    assert str(execute_is_valid_wall.value) == "Expected DirectionType, got str"
-
-def test_is_valid_wall_incorrect_wall_direction(test_cell):
-    with pytest.raises(ValueError) as execute_is_valid_wall:
-        test_cell.is_valid_wall(TriangleDirection.NORTH_WEST)
-
-    assert str(execute_is_valid_wall.value) == ("TriangleDirection.NORTH_WEST is an invalid wall direction for "
-                                                "this cell shape: CellShape.QUAD")
-
-def test_is_valid_wall_correct_wall_direction(test_cell):
-    try:
-        test_cell.is_valid_wall(QuadDirection.NORTH)
-    except Exception as e:
-        pytest.fail(f"Unexpected exception raised: {e}")
 
 # remove_wall
 def test_remove_wall(test_cell):
-    test_cell.remove_wall(QuadDirection.NORTH)
-    assert test_cell.walls[QuadDirection.NORTH] == False
+    test_cell.remove_wall(wall_direction=QuadDirection.NORTH)
+    assert test_cell.shape.walls[QuadDirection.NORTH] == False
 
 # add_wall
 def test_add_wall(test_cell):
-    test_cell.walls = {d: False for d in QuadDirection}
+    test_cell.shape.walls = {d: False for d in QuadDirection}
     test_cell.add_wall(QuadDirection.NORTH)
-    assert test_cell.walls[QuadDirection.NORTH] == True
+    assert test_cell.shape.walls[QuadDirection.NORTH] == True
 
 # build_cell_line
 def test_build_cell_line_vertical_borders_only(test_cell):
