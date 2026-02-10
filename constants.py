@@ -4,4 +4,3 @@ CELL_HEIGHT: int = 1
 HORIZONTAL_CHAR: str = "-"
 VERTICAL_CHAR: str = "│"
 IN_BETWEEN_CELLS_CHAR: str = "+"
-

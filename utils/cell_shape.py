@@ -25,6 +25,4 @@ class CellShape(ABC):
 
 class QuadCellShape(CellShape):
     def __init__(self):
-        super().__init__(name = "Quadratic", directions = QuadDirection)
-
-
+        super().__init__(name="Quadratic", directions=QuadDirection)

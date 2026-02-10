@@ -8,13 +8,10 @@ from enums.direction_enums import QuadDirection
 class QuadCell(Cell):
 
     def __init__(self, row: int, col: int):
-        super().__init__(
-            pos=(row, col)
-        )
+        super().__init__(pos=(row, col))
 
     def __str__(self):
         return "\n".join(self.get_cell_lines())
-
 
     def get_cell_lines(self) -> list[str]:
         """
@@ -33,7 +30,7 @@ class QuadCell(Cell):
                 is_left=self.walls[QuadDirection.WEST],
                 is_middle=None,
                 is_right=self.walls[QuadDirection.EAST],
-                has_content= True if i == CELL_HEIGHT // 2 else False
+                has_content=True if i == CELL_HEIGHT // 2 else False,
             )
             for i in range(CELL_HEIGHT)
         ]

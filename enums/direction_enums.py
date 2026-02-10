@@ -4,10 +4,13 @@ from typing import Self, Protocol
 
 from typing import runtime_checkable
 
+
 @runtime_checkable
 class DirectionType(Protocol):
     value: tuple[int, int]
+
     def get_opposite(self) -> Self: ...
+
 
 class QuadDirection(Enum):
     # (row, column)
@@ -24,7 +27,8 @@ class QuadDirection(Enum):
             self.WEST: self.EAST,
         }[self]
 
-class TriangleDirection(Enum): # For test purposes for now
+
+class TriangleDirection(Enum):  # For test purposes for now
     # (row, column)
     NORTH_EAST = (-1, 1)
     SOUTH = (1, 0)

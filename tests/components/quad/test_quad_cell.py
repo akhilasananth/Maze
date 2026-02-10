@@ -1,5 +1,10 @@
 import pytest
-from components.quad.quad_cell import QuadCell, QuadDirection, get_cell_content, build_cell_line
+from components.quad.quad_cell import (
+    QuadCell,
+    QuadDirection,
+    get_cell_content,
+    build_cell_line,
+)
 from constants import (
     VERTICAL_CHAR,
     IN_BETWEEN_CELLS_CHAR,
@@ -18,7 +23,6 @@ def test_cell():
 
 
 # build_cell_line
-
 
 
 # To String tests
@@ -123,6 +127,7 @@ def test_check_wall_direction_undefined_in_cell(test_cell):
 
     assert str(execute_is_wall.value) == "Please enter a valid wall direction."
 
+
 # add and remove wall tests
 def test_remove_wall(test_cell):
     test_cell.remove_wall(QuadDirection.NORTH)
@@ -146,7 +151,6 @@ def test_add_wall(test_cell):
 
 def test_add_wall_invalid(test_cell):
     pass
-
 
 
 # set is_visited
