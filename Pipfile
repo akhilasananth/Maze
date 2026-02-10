@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+start = "mypy components tests && python main.py"
+
+[packages]
+black = "*"
+mypy = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.14"
