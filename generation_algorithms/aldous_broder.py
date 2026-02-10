@@ -1,12 +1,14 @@
 # Aldous Broder: https://tinyurl.com/y78a2edz
 
-from components.grid import Grid
+from components.quad.quad_grid import Grid
+
 
 def is_valid_input(dimension: str) -> bool:
     try:
         return int(dimension) > 0
     except ValueError:
         return False
+
 
 print("Let's generate a Maze!")
 print("Please specify the dimensions of your maze")
@@ -28,7 +30,7 @@ while True:
     print("❌ Invalid input. Enter a positive integer.")
 
 # Create Grid
-grid = Grid(rows,cols)
+grid = Grid(rows, cols)
 
 start_char = "X"
 
@@ -59,8 +61,10 @@ while grid.get_unvisited_cells():
         if count > 0:
             current_cell.is_visited = True
             current_cell.set_cell_content(start_char)
-            print(f"Starting at {start_char}: row: {current_cell.pos[0] + 1} "
-                  f"col: {current_cell.pos[1] + 1}")
+            print(
+                f"Starting at {start_char}: row: {current_cell.pos[0] + 1} "
+                f"col: {current_cell.pos[1] + 1}"
+            )
             count -= 1
         current_cell = grid.get_random_any_cell()
         current_cell.is_visited = True

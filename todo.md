@@ -1,12 +1,14 @@
 # Next Steps
 In priority order
 
-- [ ] Figure out what's going on with the grid tests that are no passing
-- [ ] Update tests for components
+Cleanup checklist:
+- [x] Properly separate cell and quad cell
+- [ ] Make sure that cell and quad cell are tested properly
+- [ ] Properly separate grid and quad grid
+- [ ] Make sure that grid and quad grid are tested properly
 - [ ] Write tests for aldous_broder.py
-- [ ] Write more tests for components
-- [ ] Refactor any repeated code
-- [ ] Document methods
+
+Next:
 - [ ] Random depth first search
 - [ ] Tests for Random depth first search
 - [ ] Wilson's algorithm 
