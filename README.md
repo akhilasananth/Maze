@@ -2,7 +2,7 @@
 Amaze maze
 ## Vision
 - [x] Generate Maze
-- [ ] Add levels—How can I increase complexity of the maze?
+- [ ] Add levels—How can I increase the complexity of the maze?
 - [ ] Make this a web app
 - [ ] In a web app, allow the user to have a position:
   - Time the game

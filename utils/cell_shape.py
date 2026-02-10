@@ -10,7 +10,7 @@ class CellShape(ABC):
         self.directions: DirectionType = directions
         self.walls: dict[DirectionType, bool] = self._get_directions()
 
-    def is_valid_wall(self, wall_direction: DirectionType):
+    def is_valid_wall(self, wall_direction: DirectionType)-> None:
         check_type(wall_direction, DirectionType)
         if wall_direction not in self.directions:
             raise ValueError(
