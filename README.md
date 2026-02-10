@@ -1,9 +1,14 @@
 # Maze [⚠️WIP]
 Amaze maze
 ## Vision
-- Maze CLI game
-- Add levels
+- Generate Maze
+- Add levels—How can I increase complexity of the maze?
 - Make this a web app
+- In a web app, allow the user to have a position:
+  - Time the game
+  - Calculate the number of moves
+  - Calculate the shortest path and display the number of moves
+- Maybe I can store the user information in a relational DB and track their progress
 - Create geo spacial mazes using open street map?
 - Possible ar game?
 
