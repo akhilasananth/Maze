@@ -1,4 +1,4 @@
-# Maze
+# Maze [⚠️WIP]
 Amaze maze
 ## Vision
 - Maze CLI game
