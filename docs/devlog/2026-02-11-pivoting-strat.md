@@ -44,3 +44,5 @@ Don’t try to do all of these things at the same time, and maybe don’t write 
 **Love this**: Good code isn’t about getting it right the first time. 
 Good code is just legacy code that doesn’t get in the way. Good code is easy to delete. 
 
+While commiting this massacre, I deleted all the methods used only in tests and abstractions. 
+Magically, things seem way clearer!
