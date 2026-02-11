@@ -4,6 +4,7 @@ In priority order
 Cleanup checklist:
 - [ ] Refactor unnecessary code from grid
 - [ ] Write tests for aldous_broder.py
+- [ ] Documentation check
 
 Next:
 - [ ] Random depth first search
