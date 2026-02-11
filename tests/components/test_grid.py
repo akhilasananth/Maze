@@ -313,7 +313,7 @@ def test_maze_accessibility(rows, cols):
     """Generate a maze using Aldous-Broder and ensure all cells are reachable."""
     grid = Grid(rows, cols)
 
-    # Pick a random starting cell (your maze function might do this differently)
+    # Pick a random starting cell
     start_cell = grid.get_random_any_cell()
     start_cell.is_visited = True
 
