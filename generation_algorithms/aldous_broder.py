@@ -1,6 +1,6 @@
 # Aldous Broder: https://tinyurl.com/y78a2edz
 
-from components.quad.quad_grid import Grid
+from components.grid import Grid
 
 
 def is_valid_input(dimension: str) -> bool:

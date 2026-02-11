@@ -1,7 +1,7 @@
 import random
-from components.quad.quad_cell import QuadCell, QuadDirection
+from components.cell import QuadCell, QuadDirection
 from constants import CellType
-from components.quad.quad_grid import Grid
+from components.grid import Grid
 import pytest
 from dataclasses import dataclass
 

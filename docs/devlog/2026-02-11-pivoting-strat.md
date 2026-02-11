@@ -2,10 +2,10 @@
 
 Why?
 Because I feel like I am adding more and abstraction, just in case I'll extend the program in the future. 
-I am losing sight of actually making the project better, and this content refactoring feels like a waste of time.
+I am losing sight of actually making the project better, and this constant refactoring feels like a waste of time.
 It might not be a waste of time in the long term, but right now it is.
 I have no plans to extend at the moment, and this is outside my scope at the moment.
-This code is not tested and pretty sure that it will not run, but I am not moving forward.
+This code is not tested, and I'm pretty sure that it will not run, but I am not moving forward.
 I have decided to just work on improving the mvp that I initially built. 
 I spent almost 3 days refactoring this for extensibility.
 I came across this article and it kind of opened my eyes: [article](https://programmingisterrible.com/post/139222674273/write-code-that-is-easy-to-delete-not-easy-to)
