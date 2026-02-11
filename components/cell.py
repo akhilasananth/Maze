@@ -1,82 +1,54 @@
-from components.cell import Cell
-from constants import (
-    CELL_HEIGHT,
-)
-from enums.direction_enums import QuadDirection
-
-from abc import ABC, abstractmethod
-
-from constants import IN_BETWEEN_CELLS_CHAR, VERTICAL_CHAR, CELL_WIDTH, HORIZONTAL_CHAR
-from utils.cell_shape import QuadCellShape, CellShape
+from constants import CELL_HEIGHT, IN_BETWEEN_CELLS_CHAR, VERTICAL_CHAR, CELL_WIDTH, HORIZONTAL_CHAR
 from utils.helpers import get_cell_content
-from utils.validators import check_type
-from abc import ABC
 from enum import Enum
 
-from enums.direction_enums import DirectionType, QuadDirection
+from enums.direction_enums import QuadDirection
 from utils.validators import check_type
 
-class CellShape(ABC):
-    def __init__(self, name: str, directions: DirectionType):
-        self.name: str = name
-        self.directions: DirectionType = directions
-        self.walls: dict[DirectionType, bool] = self._get_directions()
-
-    def validate_wall_direction(self, wall_direction: DirectionType)-> None:
-        check_type(wall_direction, DirectionType)
-        if wall_direction not in self.directions:
-            raise ValueError(
-                f"{str(wall_direction)} is an invalid wall direction for this cell shape: {self.name}"
-            )
-
-    def _get_directions(self) -> dict[DirectionType|Enum, bool]:
-        return {d: True for d in self.directions.get_directions()}
-
-    def get_number_of_walls(self) -> int:
-        return len(self.walls)
-
-    def remove_wall(self, wall_direction: DirectionType) -> None:
-        self.validate_wall_direction(wall_direction=wall_direction)
-        self.walls[wall_direction] = False
-
-    def add_wall(self, wall_direction: DirectionType) -> None:
-        self.validate_wall_direction(wall_direction)
-        self.walls[wall_direction] = True
-
-
-class QuadCellShape(CellShape):
-    def __init__(self) -> None:
-        super().__init__(name="Quadratic", directions=QuadDirection)
-
-class Cell(ABC):
+class Cell:
     def __init__(
         self,
         pos: tuple[int, int],
-        content: str = " ",
-        shape: CellShape | None = None,
+        content: str = " "
     ):
-        self.shape: CellShape = shape or QuadCellShape()
         self.pos: tuple[int, int] = pos
         self.content: str = get_cell_content(content)
         self.is_visited = False
+        self.direction = QuadDirection
+        self.walls: dict[Enum, bool] = {d: True for d in self.direction}
 
-    @abstractmethod
-    def __str__(self) -> None:
-        raise NotImplementedError("Cell subclass must implement __str__")
+    def __str__(self) -> str:
+        return "\n".join(self.get_cell_lines())
 
-    @abstractmethod
+
     def get_cell_lines(self) -> list[str]:
         """
-        Get a list consisting of the border-lines of a cell constructed using the build_cell_line method
+        Get a list consisting of the 3 border-lines of a cell.
+        A cell is made of 3 border-lines: top, middle and bottom.
         """
-        raise NotImplementedError("Cell subclass must implement get_cell_lines")
 
-    def set_is_visited(self, is_visited: bool) -> None:
-        check_type(is_visited, bool)
-        self.is_visited = is_visited
+        # Top border
+        top_line = self.build_cell_line(
+            is_left=None, is_middle=self.walls[QuadDirection.NORTH], is_right=None
+        )
 
-    def set_cell_content(self, char: str) -> None:
-        self.content = get_cell_content(char)
+        # Middle get_cell_lines
+        middle_lines = [
+            self.build_cell_line(
+                is_left=self.walls[QuadDirection.WEST],
+                is_middle=None,
+                is_right=self.walls[QuadDirection.EAST],
+                has_content=True if i == CELL_HEIGHT // 2 else False,
+            )
+            for i in range(CELL_HEIGHT)
+        ]
+
+        # Bottom border
+        bottom_line = self.build_cell_line(
+            is_left=None, is_middle=self.walls[QuadDirection.SOUTH], is_right=None
+        )
+
+        return [top_line, *middle_lines, bottom_line]
 
     def build_cell_line(
         self,
@@ -116,40 +88,13 @@ class Cell(ABC):
 
         return side(is_left) + middle + side(is_right)
 
-
-class QuadCell(Cell):
-
-    def __init__(self, row: int, col: int):
-        super().__init__(pos=(row, col))
-
-    def __str__(self) -> str:
-        return "\n".join(self.get_cell_lines())
-
-    def get_cell_lines(self) -> list[str]:
-        """
-        Get a list consisting of the 3 border-lines of a cell.
-        A cell is made of 3 border-lines: top, middle and bottom.
-        """
-
-        # Top border
-        top_line = self.build_cell_line(
-            is_left=None, is_middle=self.shape.walls[QuadDirection.NORTH], is_right=None
-        )
-
-        # Middle get_cell_lines
-        middle_lines = [
-            self.build_cell_line(
-                is_left=self.shape.walls[QuadDirection.WEST],
-                is_middle=None,
-                is_right=self.shape.walls[QuadDirection.EAST],
-                has_content=True if i == CELL_HEIGHT // 2 else False,
+    def remove_wall(self, wall_direction: QuadDirection) -> None:
+        check_type(wall_direction, QuadDirection)
+        if wall_direction not in self.direction:
+            raise ValueError(
+                f"{str(wall_direction)} is an invalid wall direction"
             )
-            for i in range(CELL_HEIGHT)
-        ]
+        self.walls[wall_direction] = False
 
-        # Bottom border
-        bottom_line = self.build_cell_line(
-            is_left=None, is_middle=self.shape.walls[QuadDirection.SOUTH], is_right=None
-        )
-
-        return [top_line, *middle_lines, bottom_line]
+    def set_cell_content(self, char: str) -> None:
+        self.content = get_cell_content(char)
