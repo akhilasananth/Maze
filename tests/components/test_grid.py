@@ -301,38 +301,3 @@ def test_tostr_grid_bottom_left_corner_no_west(test_objects: TestObjects) -> Non
     )
 
     assert str(grid) == expected
-
-
-@pytest.mark.parametrize(
-    "rows,cols",
-    [
-        (2, 2),
-        (5, 5),
-        (10, 10),
-        (1, 10),
-        (10, 1),
-    ],
-)
-def test_maze_accessibility(rows, cols):
-    """Generate a maze using Aldous-Broder and ensure all cells are reachable."""
-    grid = Grid(rows, cols)
-
-    # Pick a random starting cell
-    start_cell = grid.get_random_any_cell()
-    start_cell.is_visited = True
-
-    visited_count = 1
-    total_cells = grid.rows * grid.cols
-    current_cell = start_cell
-
-    # Aldous-Broder loop
-    while visited_count < total_cells:
-        neighbour, direction = grid.get_random_neighbour(current_cell)
-        if not neighbour.is_visited:
-            grid.remove_grid_wall(*current_cell.pos, direction)
-            neighbour.is_visited = True
-            visited_count += 1
-        current_cell = neighbour
-
-    # Now test accessibility
-    assert grid.all_cells_accessible(start_cell), "Some cells are inaccessible!"

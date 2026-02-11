@@ -172,8 +172,11 @@ class Grid:
 
         return accessible
 
-    def all_cells_accessible(self, start_cell):
-        """Check if all cells in the maze are reachable from start_cell."""
+    def all_cells_accessible(self):
+        # Pick a random starting cell
+        start_cell = self.get_random_any_cell()
+        start_cell.is_visited = True
+
         visited = set()
         stack = [start_cell]
 
