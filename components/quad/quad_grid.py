@@ -1,7 +1,7 @@
 import random
 
 from components.quad.quad_cell import QuadCell, QuadDirection
-from constants import CellType
+from enums.enums import CellType
 
 
 class Grid:
@@ -28,7 +28,7 @@ class Grid:
         return nr, nc
 
     def remove_grid_wall(self, row, col, wall_direction: QuadDirection):
-        self.grid[row][col].remove_wall(wall_direction)
+        self.grid[row][col].shape.remove_wall(wall_direction)
 
         opposite_direction = wall_direction.get_opposite()
         opposite_cell_coord = self.get_cell_coord_in_direction(
@@ -37,7 +37,7 @@ class Grid:
 
         if opposite_cell_coord:
             nr, nc = opposite_cell_coord
-            self.grid[nr][nc].remove_wall(opposite_direction)
+            self.grid[nr][nc].shape.remove_wall(opposite_direction)
 
     def __str__(self):
         lines: list[str] = []
@@ -151,7 +151,7 @@ class Grid:
     ) -> tuple[QuadCell, QuadDirection] | None:
         """
         returns a tuple of the random unvisited neighbor Cell and its direction relative to the current cell
-        or None if the cells in all 4 directions are visited
+        or None if the cells in all 4 get_directions are visited
         """
         neighbors: list[tuple[QuadCell, QuadDirection]] = []
 

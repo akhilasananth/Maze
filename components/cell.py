@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 from constants import IN_BETWEEN_CELLS_CHAR, VERTICAL_CHAR, CELL_WIDTH, HORIZONTAL_CHAR
-from enums.direction_enums import DirectionType
 from utils.cell_shape import QuadCellShape, CellShape
 from utils.helpers import get_cell_content
 from utils.validators import check_type
@@ -12,16 +11,15 @@ class Cell(ABC):
         self,
         pos: tuple[int, int],
         content: str = " ",
-        shape: CellShape = QuadCellShape(),
+        shape: CellShape | None = None,
     ):
-
+        self.shape: CellShape = shape or QuadCellShape()
         self.pos: tuple[int, int] = pos
-        self.shape: CellShape = shape
         self.content: str = get_cell_content(content)
         self.is_visited = False
 
     @abstractmethod
-    def __str__(self):
+    def __str__(self) -> None:
         raise NotImplementedError("Cell subclass must implement __str__")
 
     @abstractmethod
@@ -38,14 +36,13 @@ class Cell(ABC):
     def set_cell_content(self, char: str) -> None:
         self.content = get_cell_content(char)
 
-
     def build_cell_line(
         self,
         is_left: bool | None,
         is_middle: bool | None,
         is_right: bool | None,
         has_content: bool = False,
-    ):
+    ) -> str:
         """
         A border-line in the cell is made of 3 parts: [left] + [middle] + [right].
         :param is_left: On the left: None: there is no vertical border or True: a vertical border exists
