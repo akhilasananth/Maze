@@ -17,6 +17,7 @@ class TestObjects:
     bottom_left_corner_cell_pos: tuple[int, int]
     grid: "Grid"
 
+
 @pytest.fixture
 def test_objects() -> TestObjects:
     grid = Grid(3, 3)
@@ -27,6 +28,7 @@ def test_objects() -> TestObjects:
         grid=grid,
     )
 
+
 @pytest.fixture
 def fixed_random_choice(monkeypatch: MonkeyPatch) -> None:
     """
@@ -35,6 +37,7 @@ def fixed_random_choice(monkeypatch: MonkeyPatch) -> None:
     """
     monkeypatch.setattr(random, "choice", lambda x: x[0])
 
+
 # Create Grid
 def test_create_grid_dimensions() -> None:
     g = Grid(3, 4)
@@ -42,6 +45,8 @@ def test_create_grid_dimensions() -> None:
 
     assert len(grid) == 3
     assert all(len(row) == 4 for row in grid)
+
+
 def test_create_grid_contains_cells() -> None:
     g = Grid(2, 2)
     grid = g.create_grid()
@@ -49,6 +54,7 @@ def test_create_grid_contains_cells() -> None:
     assert isinstance(grid[0][0], Cell)
     assert grid[0][0].pos == (0, 0)
     assert grid[1][1].pos == (1, 1)
+
 
 # Full Grid
 def test_tostr_grid_full(test_objects: TestObjects) -> None:
@@ -65,6 +71,7 @@ def test_tostr_grid_full(test_objects: TestObjects) -> None:
     )
 
     assert str(grid) == expected
+
 
 # Middle Cell Tests
 def test_tostr_grid_middle_no_north(test_objects: TestObjects) -> None:
@@ -84,6 +91,8 @@ def test_tostr_grid_middle_no_north(test_objects: TestObjects) -> None:
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_middle_no_east(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
@@ -101,6 +110,8 @@ def test_tostr_grid_middle_no_east(test_objects: TestObjects) -> None:
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_middle_no_south(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
@@ -118,6 +129,8 @@ def test_tostr_grid_middle_no_south(test_objects: TestObjects) -> None:
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_middle_no_west(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.middle_cell_pos
@@ -135,6 +148,7 @@ def test_tostr_grid_middle_no_west(test_objects: TestObjects) -> None:
     )
 
     assert str(grid) == expected
+
 
 # Top Right Corner Cell Tests
 def test_tostr_grid_top_right_corner_no_north(test_objects: TestObjects) -> None:
@@ -154,6 +168,8 @@ def test_tostr_grid_top_right_corner_no_north(test_objects: TestObjects) -> None
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_top_right_corner_no_west(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.top_right_corner_cell_pos
@@ -171,6 +187,8 @@ def test_tostr_grid_top_right_corner_no_west(test_objects: TestObjects) -> None:
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_top_right_corner_no_east(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.top_right_corner_cell_pos
@@ -188,6 +206,8 @@ def test_tostr_grid_top_right_corner_no_east(test_objects: TestObjects) -> None:
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_top_right_corner_no_south(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.top_right_corner_cell_pos
@@ -205,6 +225,7 @@ def test_tostr_grid_top_right_corner_no_south(test_objects: TestObjects) -> None
     )
 
     assert str(grid) == expected
+
 
 # Bottom Left Corner Cell Tests
 def test_tostr_grid_bottom_left_corner_no_north(test_objects: TestObjects) -> None:
@@ -224,6 +245,8 @@ def test_tostr_grid_bottom_left_corner_no_north(test_objects: TestObjects) -> No
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_bottom_left_corner_no_east(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.bottom_left_corner_cell_pos
@@ -241,6 +264,8 @@ def test_tostr_grid_bottom_left_corner_no_east(test_objects: TestObjects) -> Non
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_bottom_left_corner_no_south(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.bottom_left_corner_cell_pos
@@ -258,6 +283,8 @@ def test_tostr_grid_bottom_left_corner_no_south(test_objects: TestObjects) -> No
     )
 
     assert str(grid) == expected
+
+
 def test_tostr_grid_bottom_left_corner_no_west(test_objects: TestObjects) -> None:
     grid = test_objects.grid
     r, c = test_objects.bottom_left_corner_cell_pos
@@ -276,6 +303,7 @@ def test_tostr_grid_bottom_left_corner_no_west(test_objects: TestObjects) -> Non
 
     assert str(grid) == expected
 
+
 # Random Cell
 def test_get_random_cell_returns_unvisited_cell(test_objects: TestObjects) -> None:
     g = test_objects.grid
@@ -284,7 +312,11 @@ def test_get_random_cell_returns_unvisited_cell(test_objects: TestObjects) -> No
     cell = g.get_random_any_cell()
     assert isinstance(cell, Cell)
     assert cell.is_visited is False
-def test_get_random_cell_returns_different_cells(test_objects: TestObjects, fixed_random_choice: None) -> None:
+
+
+def test_get_random_cell_returns_different_cells(
+    test_objects: TestObjects, fixed_random_choice: None
+) -> None:
     g = test_objects.grid
 
     first_cell = g.get_random_any_cell()
@@ -292,6 +324,8 @@ def test_get_random_cell_returns_different_cells(test_objects: TestObjects, fixe
 
     next_cell = g.get_random_any_cell()
     assert next_cell != first_cell  # should pick a different unvisited cell
+
+
 def test_get_random_cell_raises_when_all_visited(test_objects: TestObjects) -> None:
     g = test_objects.grid
 
@@ -307,8 +341,11 @@ def test_get_random_cell_raises_when_all_visited(test_objects: TestObjects) -> N
     ):
         g.get_random_any_cell()
 
+
 # Random Unvisited Neighbour
-def test_random_unvisited_neighbour_returns_none_if_all_visited(test_objects: TestObjects) -> None:
+def test_random_unvisited_neighbour_returns_none_if_all_visited(
+    test_objects: TestObjects,
+) -> None:
     g = test_objects.grid
     middle_r, middle_c = test_objects.middle_cell_pos
     cell = g.grid[middle_r][middle_c]
@@ -320,7 +357,11 @@ def test_random_unvisited_neighbour_returns_none_if_all_visited(test_objects: Te
     g.grid[1][0].is_visited = True  # WEST
 
     assert g.get_random_unvisited_neighbour(cell) is None
-def test_random_unvisited_neighbour_returns_only_available_neighbor(test_objects: TestObjects, fixed_random_choice: None) -> None:
+
+
+def test_random_unvisited_neighbour_returns_only_available_neighbor(
+    test_objects: TestObjects, fixed_random_choice: None
+) -> None:
     g = test_objects.grid
     middle_r, middle_c = test_objects.middle_cell_pos
     cell = g.grid[middle_r][middle_c]
@@ -337,7 +378,11 @@ def test_random_unvisited_neighbour_returns_only_available_neighbor(test_objects
 
         assert neighbor == g.grid[1][2]
         assert direction == QuadDirection.EAST
-def test_random_unvisited_neighbour_corner_cell_bounds(test_objects: TestObjects, fixed_random_choice: None) -> None:
+
+
+def test_random_unvisited_neighbour_corner_cell_bounds(
+    test_objects: TestObjects, fixed_random_choice: None
+) -> None:
     g = test_objects.grid
     top_right_r, top_right_c = test_objects.top_right_corner_cell_pos
     cell = g.grid[top_right_r][top_right_c]

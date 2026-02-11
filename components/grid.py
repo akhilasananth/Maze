@@ -27,7 +27,9 @@ class Grid:
 
         return nr, nc
 
-    def remove_grid_wall(self, row: int, col: int, wall_direction: QuadDirection) -> None:
+    def remove_grid_wall(
+        self, row: int, col: int, wall_direction: QuadDirection
+    ) -> None:
         self.grid[row][col].remove_wall(wall_direction)
 
         opposite_direction = wall_direction.get_opposite()

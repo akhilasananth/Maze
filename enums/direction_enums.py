@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Self
 
+
 class QuadDirection(Enum):
     # (row, column)
     NORTH = (-1, 0)

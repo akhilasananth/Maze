@@ -9,6 +9,10 @@ start = "python run.py"
 [packages]
 black = "*"
 mypy = "*"
+ruff = "*"
+bandit = "*"
+safety = "*"
+pydocstyle = "*"
 
 [dev-packages]
 

@@ -1,16 +1,18 @@
-from constants import CELL_HEIGHT, IN_BETWEEN_CELLS_CHAR, VERTICAL_CHAR, CELL_WIDTH, HORIZONTAL_CHAR
+from constants import (
+    CELL_HEIGHT,
+    IN_BETWEEN_CELLS_CHAR,
+    VERTICAL_CHAR,
+    CELL_WIDTH,
+    HORIZONTAL_CHAR,
+)
 from utils.helpers import get_cell_content
-from enum import Enum
 
 from enums.direction_enums import QuadDirection
 from utils.validators import check_type
 
+
 class Cell:
-    def __init__(
-        self,
-        pos: tuple[int, int],
-        content: str = " "
-    ):
+    def __init__(self, pos: tuple[int, int], content: str = " "):
         self.pos: tuple[int, int] = pos
         self.content: str = get_cell_content(content)
         self.is_visited = False
@@ -19,7 +21,6 @@ class Cell:
 
     def __str__(self) -> str:
         return "\n".join(self.get_cell_lines())
-
 
     def get_cell_lines(self) -> list[str]:
         """
@@ -91,9 +92,7 @@ class Cell:
     def remove_wall(self, wall_direction: QuadDirection) -> None:
         check_type(wall_direction, QuadDirection)
         if wall_direction not in self.direction:
-            raise ValueError(
-                f"{str(wall_direction)} is an invalid wall direction"
-            )
+            raise ValueError(f"{str(wall_direction)} is an invalid wall direction")
         self.walls[wall_direction] = False
 
     def set_cell_content(self, char: str) -> None:
