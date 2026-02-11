@@ -15,7 +15,7 @@ class Cell:
         self.content: str = get_cell_content(content)
         self.is_visited = False
         self.direction = QuadDirection
-        self.walls: dict[Enum, bool] = {d: True for d in self.direction}
+        self.walls: dict[QuadDirection, bool] = {d: True for d in self.direction}
 
     def __str__(self) -> str:
         return "\n".join(self.get_cell_lines())

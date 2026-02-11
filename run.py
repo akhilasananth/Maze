@@ -11,6 +11,6 @@ if __name__ == "__main__":
         print("\n❌ mypy failed. Fix type errors before running.\n")
         sys.exit(mypy_code)
 
-    program_code = run(["pipenv", "run", "python", "main.py"])
+    program_code = run(["pipenv", "run", "python", "generation_algorithms/aldous_broder.py"])
     sys.exit(program_code)
 

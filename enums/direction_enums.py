@@ -8,10 +8,10 @@ class QuadDirection(Enum):
     EAST = (0, 1)
     WEST = (0, -1)
 
-    def __str__(self) -> str | None:
+    def __str__(self) -> str:
         return self.name.capitalize()
 
-    def get_opposite(self) -> Self | None:
+    def get_opposite(self) -> Self:
         return {
             self.NORTH: self.SOUTH,
             self.SOUTH: self.NORTH,
