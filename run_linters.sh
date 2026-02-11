@@ -8,21 +8,19 @@ echo -e "\033[1;31mRunning Ruff (check + fix) 🐸\033[0m"
 ruff check . --fix
 echo
 
-echo "🏃🏻‍♀️Running Ruff (format)..."
-#echo -e "\033[1;31mRunning Black 🐸\033[0m"
+echo -e "\033[1;31m️Running Ruff (format) 🐸\033[0m"
 ruff format .
 echo
 
-echo "🏃🏻‍♀️Running Bandit..."
-#echo -e "\033[1;31mRunning Black 🐸\033[0m"
+echo -e "\033[1;31mRunning Bandit 🐸\033[0m"
 bandit -r .
 echo
 
-echo "🏃🏻‍♀️Running Safety..."
+echo -e "\033[1;31mRunning Safety 🐸\033[0m"
 safety check
 echo
 
-echo "🏃🏻‍♀️Running Pydocstyle..."
+echo -e "\033[1;31mRunning Pydocstyle 🐸\033[0m"
 pydocstyle .
 echo
 

@@ -1,7 +1,6 @@
 import random
 
 from components.cell import QuadDirection, Cell
-from enums.enums import CellType
 
 
 class Grid:
@@ -9,7 +8,7 @@ class Grid:
         self.rows: int = rows
         self.cols: int = cols
         self.grid: list[list[Cell]] = self.create_grid()
-        self.all_cells: list[tuple[int, int]]= self.get_cells()
+        self.all_cells: list[tuple[int, int]] = self.get_cells()
 
     def create_grid(self) -> list[list[Cell]]:
         return [
@@ -68,11 +67,7 @@ class Grid:
         return "\n".join(lines)
 
     def get_cells(self) -> list[tuple[int, int]]:
-        return [
-            (r, c)
-            for r, row in enumerate(self.grid)
-            for c, cell in enumerate(row)
-        ]
+        return [(r, c) for r, row in enumerate(self.grid) for c, cell in enumerate(row)]
 
     def _get_random_cell(self, cells: list[tuple[int, int]]) -> Cell:
         r, c = random.choice(cells)
@@ -141,9 +136,7 @@ class Grid:
 
         return None
 
-    def get_random_neighbour(
-        self, cell: Cell
-    ) -> tuple[Cell, QuadDirection] | None:
+    def get_random_neighbour(self, cell: Cell) -> tuple[Cell, QuadDirection] | None:
         """
         returns a tuple of the random neighbor Cell and its direction relative to the current cell
         or None if the cells in all 4 get_directions are visited

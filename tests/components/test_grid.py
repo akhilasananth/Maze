@@ -302,13 +302,17 @@ def test_tostr_grid_bottom_left_corner_no_west(test_objects: TestObjects) -> Non
 
     assert str(grid) == expected
 
-@pytest.mark.parametrize("rows,cols", [
-    (2, 2),
-    (5, 5),
-    (10, 10),
-    (1, 10),
-    (10, 1),
-])
+
+@pytest.mark.parametrize(
+    "rows,cols",
+    [
+        (2, 2),
+        (5, 5),
+        (10, 10),
+        (1, 10),
+        (10, 1),
+    ],
+)
 def test_maze_accessibility(rows, cols):
     """Generate a maze using Aldous-Broder and ensure all cells are reachable."""
     grid = Grid(rows, cols)
