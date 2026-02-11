@@ -1,6 +1,6 @@
 import random
 
-from components.cell import QuadCell, QuadDirection
+from components.cell import QuadDirection, Cell
 from enums.enums import CellType
 
 
@@ -8,15 +8,15 @@ class Grid:
     def __init__(self, rows: int, cols: int):
         self.rows: int = rows
         self.cols: int = cols
-        self.grid: list[list[QuadCell]] = self.create_grid()
+        self.grid: list[list[Cell]] = self.create_grid()
 
-    def create_grid(self) -> list[list[QuadCell]]:
+    def create_grid(self) -> list[list[Cell]]:
         return [
-            [QuadCell(row, col) for col in range(self.cols)] for row in range(self.rows)
+            [Cell((row, col)) for col in range(self.cols)] for row in range(self.rows)
         ]
 
     def get_cell_coord_in_direction(
-        self, cell: QuadCell, direction: QuadDirection
+        self, cell: Cell, direction: QuadDirection
     ) -> tuple[int, int] | None:
         dr, dc = direction.value
         r, c = cell.pos
@@ -28,7 +28,7 @@ class Grid:
         return nr, nc
 
     def remove_grid_wall(self, row, col, wall_direction: QuadDirection):
-        self.grid[row][col].shape.remove_wall(wall_direction)
+        self.grid[row][col].remove_wall(wall_direction)
 
         opposite_direction = wall_direction.get_opposite()
         opposite_cell_coord = self.get_cell_coord_in_direction(
@@ -37,7 +37,7 @@ class Grid:
 
         if opposite_cell_coord:
             nr, nc = opposite_cell_coord
-            self.grid[nr][nc].shape.remove_wall(opposite_direction)
+            self.grid[nr][nc].remove_wall(opposite_direction)
 
     def __str__(self):
         lines: list[str] = []
@@ -74,7 +74,7 @@ class Grid:
 
     def get_random_cell(
         self, unvisited_cells: list[tuple[int, int]], cell_type: CellType
-    ) -> QuadCell:
+    ) -> Cell:
         if not unvisited_cells:
             raise RuntimeError(
                 f"{cell_type.value} cells in the grid have already been visited."
@@ -83,10 +83,10 @@ class Grid:
         r, c = random.choice(unvisited_cells)
         return self.grid[r][c]
 
-    def get_random_any_cell(self) -> QuadCell:
+    def get_random_any_cell(self) -> Cell:
         return self.get_random_cell(self.get_unvisited_cells(), CellType.ALL)
 
-    def get_random_border_cell(self) -> QuadCell:
+    def get_random_border_cell(self) -> Cell:
         border_unvisited_cells = [
             (r, c)
             for r, c in self.get_unvisited_cells()
@@ -94,7 +94,7 @@ class Grid:
         ]
         return self.get_random_cell(border_unvisited_cells, CellType.BORDER)
 
-    def open_maze(self, border_cell: QuadCell) -> None:
+    def open_maze(self, border_cell: Cell) -> None:
         # If the cell is a border cell, then remove the outer border, opening up the maze
         # This is for the cell from which the game will be starting
 
@@ -147,13 +147,13 @@ class Grid:
         return None
 
     def get_random_unvisited_neighbour(
-        self, cell: QuadCell
-    ) -> tuple[QuadCell, QuadDirection] | None:
+        self, cell: Cell
+    ) -> tuple[Cell, QuadDirection] | None:
         """
         returns a tuple of the random unvisited neighbor Cell and its direction relative to the current cell
         or None if the cells in all 4 get_directions are visited
         """
-        neighbors: list[tuple[QuadCell, QuadDirection]] = []
+        neighbors: list[tuple[Cell, QuadDirection]] = []
 
         for direction in QuadDirection:
             n_cell_coord = self.get_cell_coord_in_direction(cell, direction)

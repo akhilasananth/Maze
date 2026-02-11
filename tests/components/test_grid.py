@@ -1,9 +1,11 @@
 import random
-from components.cell import QuadCell, QuadDirection
-from constants import CellType
+from components.cell import Cell
 from components.grid import Grid
 import pytest
 from dataclasses import dataclass
+
+from enums.direction_enums import QuadDirection
+from enums.enums import CellType
 
 
 @dataclass
@@ -47,7 +49,7 @@ def test_create_grid_contains_cells():
     g = Grid(2, 2)
     grid = g.create_grid()
 
-    assert isinstance(grid[0][0], QuadCell)
+    assert isinstance(grid[0][0], Cell)
     assert grid[0][0].pos == (0, 0)
     assert grid[1][1].pos == (1, 1)
 
@@ -306,7 +308,7 @@ def test_get_random_cell_returns_unvisited_cell(test_objects):
 
     # All cells are unvisited initially
     cell = g.get_random_any_cell()
-    assert isinstance(cell, QuadCell)
+    assert isinstance(cell, Cell)
     assert cell.is_visited is False
 
 
