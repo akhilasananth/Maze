@@ -9,6 +9,7 @@ class Grid:
         self.rows: int = rows
         self.cols: int = cols
         self.grid: list[list[Cell]] = self.create_grid()
+        self.all_cells: list[tuple[int, int]]= self.get_cells()
 
     def create_grid(self) -> list[list[Cell]]:
         return [
@@ -66,35 +67,27 @@ class Grid:
 
         return "\n".join(lines)
 
-    def get_unvisited_cells(self) -> list[tuple[int, int]]:
+    def get_cells(self) -> list[tuple[int, int]]:
         return [
             (r, c)
             for r, row in enumerate(self.grid)
             for c, cell in enumerate(row)
-            if not cell.is_visited
         ]
 
-    def get_random_cell(
-        self, unvisited_cells: list[tuple[int, int]], cell_type: CellType
-    ) -> Cell:
-        if not unvisited_cells:
-            raise RuntimeError(
-                f"{cell_type.value} cells in the grid have already been visited."
-            )
-
-        r, c = random.choice(unvisited_cells)
+    def _get_random_cell(self, cells: list[tuple[int, int]]) -> Cell:
+        r, c = random.choice(cells)
         return self.grid[r][c]
 
     def get_random_any_cell(self) -> Cell:
-        return self.get_random_cell(self.get_unvisited_cells(), CellType.ALL)
+        return self._get_random_cell(self.all_cells)
 
     def get_random_border_cell(self) -> Cell:
-        border_unvisited_cells = [
+        border_cells = [
             (r, c)
-            for r, c in self.get_unvisited_cells()
+            for r, c in self.get_cells()
             if r == 0 or r == self.rows - 1 or c == 0 or c == self.cols - 1
         ]
-        return self.get_random_cell(border_unvisited_cells, CellType.BORDER)
+        return self._get_random_cell(border_cells)
 
     def open_maze(self, border_cell: Cell) -> None:
         # If the cell is a border cell, then remove the outer border, opening up the maze
@@ -148,11 +141,11 @@ class Grid:
 
         return None
 
-    def get_random_unvisited_neighbour(
+    def get_random_neighbour(
         self, cell: Cell
     ) -> tuple[Cell, QuadDirection] | None:
         """
-        returns a tuple of the random unvisited neighbor Cell and its direction relative to the current cell
+        returns a tuple of the random neighbor Cell and its direction relative to the current cell
         or None if the cells in all 4 get_directions are visited
         """
         neighbors: list[tuple[Cell, QuadDirection]] = []
@@ -162,12 +155,44 @@ class Grid:
 
             if n_cell_coord:
                 nr, nc = n_cell_coord
-                neighbor = self.grid[nr][nc]
+                neighbors.append((self.grid[nr][nc], direction))
 
-                if not neighbor.is_visited:
-                    neighbors.append((neighbor, direction))
+        if neighbors:
+            return random.choice(neighbors)
+        return None
 
-        if not neighbors:
-            return None
+    def get_accessible_neighbours(self, cell):
+        """
+        Return a list of (direction, neighbour_cell) tuples where there is no wall.
+        """
+        accessible = []
 
-        return random.choice(neighbors)
+        for direction in QuadDirection:  # assuming your directions are in an enum
+            coord = self.get_cell_coord_in_direction(cell, direction)
+            if coord is None:
+                continue  # out of bounds
+            r, c = coord
+            neighbour = self.grid[r][c]
+            # Check if there is no wall in that direction
+            if not cell.walls[direction]:  # assuming walls dict uses QuadDirection keys
+                accessible.append((direction, neighbour))
+
+        return accessible
+
+    def all_cells_accessible(self, start_cell):
+        """Check if all cells in the maze are reachable from start_cell."""
+        visited = set()
+        stack = [start_cell]
+
+        while stack:
+            cell = stack.pop()
+            if cell.pos in visited:
+                continue
+            visited.add(cell.pos)
+
+            # Check neighbors that are accessible (no wall between)
+            for direction, neighbour in self.get_accessible_neighbours(cell):
+                if neighbour.pos not in visited:
+                    stack.append(neighbour)
+
+        return len(visited) == self.rows * self.cols

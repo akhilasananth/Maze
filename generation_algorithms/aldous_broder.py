@@ -33,41 +33,26 @@ while True:
 grid = Grid(rows, cols)
 
 start_char = "X"
-
-# Pick a random starting cell
 current_cell = grid.get_random_border_cell()
 grid.open_maze(current_cell)
+current_cell.is_visited = True
 
-count = 1
-# Loop until all cells are visited
-while grid.get_unvisited_cells():
-    # Pick a random unvisited neighbour
-    random_neighbour = grid.get_random_unvisited_neighbour(current_cell)
+visited_count = 1
+total_cells = grid.rows * grid.cols
 
-    if random_neighbour is not None:
-        neighbour, direction = random_neighbour
-        # print("Moving to:", neighbour.pos)
+while visited_count < total_cells:
+    # Pick a random neighbor (visited or not)
+    neighbour, direction = grid.get_random_neighbour(current_cell)
 
-        # Remove walls between current cell and neighbour
-        curr_r, curr_c = current_cell.pos
-        grid.remove_grid_wall(curr_r, curr_c, direction)
-
-        # Mark neighbour as visited
+    # If neighbour is unvisited, remove wall and mark visited
+    if not neighbour.is_visited:
+        grid.remove_grid_wall(*current_cell.pos, direction)
         neighbour.is_visited = True
+        visited_count += 1
 
-        # Move to neighbour
-        current_cell = neighbour
-    else:
-        if count > 0:
-            current_cell.is_visited = True
-            current_cell.set_cell_content(start_char)
-            print(
-                f"Starting at {start_char}: row: {current_cell.pos[0] + 1} "
-                f"col: {current_cell.pos[1] + 1}"
-            )
-            count -= 1
-        current_cell = grid.get_random_any_cell()
-        current_cell.is_visited = True
+    # Move to the neighbor regardless
+    current_cell = neighbour
 
+current_cell.set_cell_content(start_char)
 
 print(grid)

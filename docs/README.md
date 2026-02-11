@@ -14,7 +14,7 @@ Amaze maze
 
 ## Methods
 - Aldous Broder
-  - ![img.png](../media/demos/ab_demo_2.png)
+  - ![img.png](../media/demos/ab_demo_3.png)
 
 ### **Example grid:**
 ![img.png](../media/example_grid.png)

@@ -7,7 +7,6 @@ from pytest import MonkeyPatch
 from dataclasses import dataclass
 
 from enums.direction_enums import QuadDirection
-from enums.enums import CellType
 
 
 @dataclass
@@ -303,96 +302,33 @@ def test_tostr_grid_bottom_left_corner_no_west(test_objects: TestObjects) -> Non
 
     assert str(grid) == expected
 
+@pytest.mark.parametrize("rows,cols", [
+    (2, 2),
+    (5, 5),
+    (10, 10),
+    (1, 10),
+    (10, 1),
+])
+def test_maze_accessibility(rows, cols):
+    """Generate a maze using Aldous-Broder and ensure all cells are reachable."""
+    grid = Grid(rows, cols)
 
-# Random Cell
-def test_get_random_cell_returns_unvisited_cell(test_objects: TestObjects) -> None:
-    g = test_objects.grid
+    # Pick a random starting cell (your maze function might do this differently)
+    start_cell = grid.get_random_any_cell()
+    start_cell.is_visited = True
 
-    # All cells are unvisited initially
-    cell = g.get_random_any_cell()
-    assert isinstance(cell, Cell)
-    assert cell.is_visited is False
+    visited_count = 1
+    total_cells = grid.rows * grid.cols
+    current_cell = start_cell
 
+    # Aldous-Broder loop
+    while visited_count < total_cells:
+        neighbour, direction = grid.get_random_neighbour(current_cell)
+        if not neighbour.is_visited:
+            grid.remove_grid_wall(*current_cell.pos, direction)
+            neighbour.is_visited = True
+            visited_count += 1
+        current_cell = neighbour
 
-def test_get_random_cell_returns_different_cells(
-    test_objects: TestObjects, fixed_random_choice: None
-) -> None:
-    g = test_objects.grid
-
-    first_cell = g.get_random_any_cell()
-    first_cell.is_visited = True  # mark as visited
-
-    next_cell = g.get_random_any_cell()
-    assert next_cell != first_cell  # should pick a different unvisited cell
-
-
-def test_get_random_cell_raises_when_all_visited(test_objects: TestObjects) -> None:
-    g = test_objects.grid
-
-    # Mark all cells visited
-    for row in g.grid:
-        for cell in row:
-            cell.is_visited = True
-
-    # Expect RuntimeError
-    with pytest.raises(
-        RuntimeError,
-        match=f"{CellType.ALL.value} cells in the grid have already been visited.",
-    ):
-        g.get_random_any_cell()
-
-
-# Random Unvisited Neighbour
-def test_random_unvisited_neighbour_returns_none_if_all_visited(
-    test_objects: TestObjects,
-) -> None:
-    g = test_objects.grid
-    middle_r, middle_c = test_objects.middle_cell_pos
-    cell = g.grid[middle_r][middle_c]
-
-    # mark all 4 neighbors visited
-    g.grid[0][1].is_visited = True  # NORTH
-    g.grid[2][1].is_visited = True  # SOUTH
-    g.grid[1][2].is_visited = True  # EAST
-    g.grid[1][0].is_visited = True  # WEST
-
-    assert g.get_random_unvisited_neighbour(cell) is None
-
-
-def test_random_unvisited_neighbour_returns_only_available_neighbor(
-    test_objects: TestObjects, fixed_random_choice: None
-) -> None:
-    g = test_objects.grid
-    middle_r, middle_c = test_objects.middle_cell_pos
-    cell = g.grid[middle_r][middle_c]
-
-    # For the middle cell, mark 3 visited, leave 1 unvisited
-    g.grid[0][1].is_visited = True
-    g.grid[2][1].is_visited = True
-    g.grid[1][0].is_visited = True
-    g.grid[1][2].is_visited = False  # EAST only available
-
-    random_neighbour = g.get_random_unvisited_neighbour(cell)
-    if random_neighbour:
-        neighbor, direction = random_neighbour
-
-        assert neighbor == g.grid[1][2]
-        assert direction == QuadDirection.EAST
-
-
-def test_random_unvisited_neighbour_corner_cell_bounds(
-    test_objects: TestObjects, fixed_random_choice: None
-) -> None:
-    g = test_objects.grid
-    top_right_r, top_right_c = test_objects.top_right_corner_cell_pos
-    cell = g.grid[top_right_r][top_right_c]
-
-    # mark all visited except one valid neighbor
-    g.grid[0][1].is_visited = False  # WEST
-    g.grid[1][2].is_visited = True  # SOUTH
-
-    random_neighbour = g.get_random_unvisited_neighbour(cell)
-    if random_neighbour:
-        neighbor, direction = random_neighbour
-        assert neighbor == g.grid[0][1]
-        assert direction == QuadDirection.WEST
+    # Now test accessibility
+    assert grid.all_cells_accessible(start_cell), "Some cells are inaccessible!"

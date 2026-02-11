@@ -2,11 +2,7 @@
 In priority order
 
 Cleanup checklist:
-- [x] Properly separate cell and quad cell
-- [ ] Merge cell shape and cell...that refactor was totally not necessary 
-- [ ] Make sure that cell and quad cell are tested properly
-- [ ] Properly separate grid and quad grid
-- [ ] Make sure that grid and quad grid are tested properly
+- [ ] Refactor unnecessary code from grid
 - [ ] Write tests for aldous_broder.py
 
 Next:
